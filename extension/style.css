@@ -47,6 +47,15 @@
 	text-decoration:underline;
 }
 
+#boxHackerfaceInner .hackerfaceIcon {
+	position:absolute;
+	width:15px;
+}
+
+#boxHackerfaceInner .hackerfaceUsername {
+	margin-left:20px;
+}
+
 .yfacerPic {
 	width:19px;
 	height:19px;

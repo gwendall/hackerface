@@ -90,26 +90,40 @@ displayProfile = function(face) {
 			picture = "https://raw.github.com/Gwendall/hackerface/gh-pages/stache.png";
 		}
 		profile += "<div style='width:50px;height:50px;float:left;'><img style='width:50px;height:50px;border-radius:2px;' src='"+picture+"'></div>";
-		profile += "<div style='margin-left:10px;float:left;font-weight:bold;'>"+face.user+" ("+addCommas(face.karma)+")</div>";
+		profile += "<div style='margin-left:10px;float:left;font-weight:bold;'>";
+			profile += "<div>"+face.names[0]+"</div>";
+			profile += "<div>"+face.locations[0]+"</div>";
+			profile += "<div>"+face.user+" ("+addCommas(face.karma)+")</div>";
+		profile += "</div>";
 	profile += "</div>";
 	if (face.about) {
 		profile += "<div class='hackerfaceEntry'>HN bio: "+getLinks(face.about)+"</div>";		
 	}
+
+	profile += "<div class='hackerfaceEntry'>";
+		profile += "<div>";
+			profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/hackernews.png' class='hackerfaceIcon'>";
+			profile += "<a class='hackerfaceUsername' href='http://http://news.ycombinator.com/user?id="+face.user+"' target='_blank'>"+face.user+"</a>";
+		profile += "</div>";
+	profile += "</div>";			
+
 	if (face.twitters.length) {
 //		for (i in face.twitters) {
 			profile += "<div class='hackerfaceEntry'>";
 				profile += "<div>";
-					profile += "<img src='https://rapportive.com/images/icons/twitter.png' style='margin-right:5px;'>";
-					profile += "<a href='http://twitter.com/"+face.twitters[0]+"' target='_blank'>"+face.twitters[0]+"</a>";
+					profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/twitter.png' class='hackerfaceIcon'>";
+					profile += "<a class='hackerfaceUsername' href='http://twitter.com/"+face.twitters[0]+"' target='_blank'>"+face.twitters[0]+"</a>";
 				profile += "</div>";
-				profile += "<div>"+face.names[0]+"</div>";
-				profile += "<div>"+face.locations[0]+"</div>";
-				profile += "<div>"+face.bios[0]+"</div>";
 			profile += "</div>";			
 //		}
 	}
 	if (face.githubs.length) {
-		profile += "<div class='hackerfaceEntry'>Github: <a href='http://github.com/"+face.githubs[0]+"' target='_blank'>"+face.githubs[0]+"</a></div>";		
+		profile += "<div class='hackerfaceEntry'>";
+			profile += "<div>";
+				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/github.png' class='hackerfaceIcon'>";
+				profile += "<a class='hackerfaceUsername' href='http://github.com/"+face.githubs[0]+"' target='_blank'>"+face.githubs[0]+"</a>";
+			profile += "</div>";
+		profile += "</div>";			
 	}
 	if (face.linkedins.length) {
 		profile += "<div class='hackerfaceEntry'>Linkedin: <a href='http://linkedin.com/in/"+face.linkedins[0]+"' target='_blank'>"+face.linkedins[0]+"</a></div>";		
