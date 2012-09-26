@@ -138,6 +138,14 @@ displayProfile = function(face) {
 			profile += "</div>";
 		profile += "</div>";			
 	}
+	if (face.foursquares.length) {
+		profile += "<div class='hackerfaceEntry'>";
+			profile += "<div>";
+				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/foursquare.png' class='hackerfaceIcon'>";
+				profile += "<a class='hackerfaceUsername' href='http://foursquare.com/user/"+face.foursquares[0]+"' target='_blank'>"+face.foursquares[0]+"</a>";
+			profile += "</div>";
+		profile += "</div>";			
+	}
 	if (face.githubs.length) {
 		profile += "<div class='hackerfaceEntry'>";
 			profile += "<div>";
@@ -215,6 +223,7 @@ $(document).ready(function() {
 				if ((!inArray(twitter,face.twitters))&&(!inArray(twitter,forb_twitter))&&(twitter!="")) {
 					face.twitters.push(twitter);
 					face.pictures.push("https://api.twitter.com/1/users/profile_image?screen_name="+twitter+"&size=normal");
+					// Get Twitter details
 					$.ajax({
 						accepts: "text/html",
 						url: "https://api.twitter.com/1/users/show.json?include_entities=true&screen_name="+twitter
@@ -226,6 +235,17 @@ $(document).ready(function() {
 						face.names.push(data.name);
 						$("#boxHackerfaceInner").html(displayProfile(face));						
 					});
+					// Get Foursquare details
+					$.ajax({
+						dataType: "json",
+						url: "https://api.foursquare.com/v2/users/search?oauth_token=VYAAZLEWQT5QU4YN2YOF55NFMQ1WZNHGBAIYHPSCA00KBA5E&v=20120620&twitter="+twitter
+					}).success(function(data) {
+						data = data.response.results[0];
+						face.foursquares.push(data.id);
+						face.foursquareDetails = data;
+						$("#boxHackerfaceInner").html(displayProfile(face));
+					});
+					// Get Klout details
 					$.ajax({
 						dataType: "json",
 						url: "http://api.klout.com/v2/identity.json/twitter?key=t3zd36eerj6h2scqea86qex6&screenName="+twitter
@@ -345,6 +365,8 @@ $(document).ready(function() {
 			face.githubDetails = {};
 			face.klouts = [];
 			face.kloutDetails = {};
+			face.foursquares = [];
+			face.foursquareDetails = {};
 			face.linkedins = [];
 			face.pictures = [];
 			face.locations = [];
