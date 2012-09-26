@@ -96,7 +96,7 @@ displayProfile = function(face) {
 					profile += "<div style='font-weight:bold;'>"+face.names[0]+"</div>";				
 				}
 				if (face.locations[0]!=undefined) {
-					profile += "<div style=''>"+face.locations[0]+"</div>";				
+					profile += "<div style='margin-top:5px;font-size:11px;'>"+face.locations[0]+"</div>";				
 				}
 			profile += "</div>";
 		profile += "</div>";
@@ -113,7 +113,14 @@ displayProfile = function(face) {
 			profile += "<span>"+addCommas(face.karma)+" karma</span>";
 		profile += "</div>";
 	profile += "</div>";			
-
+	if (face.facebooks.length) {
+		profile += "<div class='hackerfaceEntry'>";
+			profile += "<div>";
+				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/facebook.png' class='hackerfaceIcon'>";
+				profile += "<a class='hackerfaceUsername' href='http://facebook.com/"+face.facebooks[0]+"' target='_blank'>Facebook</a>";
+			profile += "</div>";
+		profile += "</div>";			
+	}
 	if (face.twitters.length) {
 //		for (i in face.twitters) {
 			profile += "<div class='hackerfaceEntry'>";
@@ -127,6 +134,14 @@ displayProfile = function(face) {
 				profile += "</div>";
 			profile += "</div>";			
 //		}
+	}
+	if (face.angels.length) {
+		profile += "<div class='hackerfaceEntry'>";
+			profile += "<div>";
+				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/angel.png' class='hackerfaceIcon'>";
+				profile += "<a class='hackerfaceUsername' href='http://angel.co/"+face.angels[0]+"' target='_blank'>"+face.angels[0]+"</a>";
+			profile += "</div>";
+		profile += "</div>";			
 	}
 	if (face.klouts.length) {
 		profile += "<div class='hackerfaceEntry'>";
@@ -142,7 +157,7 @@ displayProfile = function(face) {
 		profile += "<div class='hackerfaceEntry'>";
 			profile += "<div>";
 				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/foursquare.png' class='hackerfaceIcon'>";
-				profile += "<a class='hackerfaceUsername' href='http://foursquare.com/user/"+face.foursquares[0]+"' target='_blank'>"+face.foursquares[0]+"</a>";
+				profile += "<a class='hackerfaceUsername' href='http://foursquare.com/user/"+face.foursquares[0]+"' target='_blank'>"+face.twitters[0]+"</a>";
 			profile += "</div>";
 		profile += "</div>";			
 	}
@@ -166,7 +181,7 @@ displayProfile = function(face) {
 			profile += "</div>";
 		profile += "</div>";
 	}
-	if (face.emails.length) {
+	if (face.emails.length && (face.emails[0]!=undefined)) {
 		for (i in face.emails) {
 			profile += "<div class='hackerfaceEntry'>";
 				profile += "<div>";
@@ -243,7 +258,24 @@ $(document).ready(function() {
 						data = data.response.results[0];
 						face.foursquares.push(data.id);
 						face.foursquareDetails = data;
+
+						face.locations.push(data.homeCity);
+						face.bios.push(data.bio);				
+						face.names.push(data.firstName+" "+data.lastName);
+						face.emails.push(data.contact.email);
 						$("#boxHackerfaceInner").html(displayProfile(face));
+						console.log(data.contact);
+						if (data.contact.facebook) {
+							face.facebooks.push(data.contact.facebook);
+							$.ajax({
+								dataType: "json",
+								url: "http://graph.facebook.com/"+data.contact.facebook
+							}).success(function(data) {
+								face.names.push(data.name);
+								face.facebookDetails = data;
+								$("#boxHackerfaceInner").html(displayProfile(face));
+							});
+						}
 					});
 					// Get Klout details
 					$.ajax({
@@ -339,6 +371,18 @@ $(document).ready(function() {
 					if (!inArray(linkedin,face.linkedins)) {
 						face.linkedins.push(linkedin);
 					}					
+				} else if (face.websites[i].indexOf("angel.co") !=-1) {
+					var angel = cleanUsername(face.websites[i]);
+					if (angel!==undefined) {
+						angel = angel.split("angel.co/")[1];
+						if (angel!==undefined) {
+							angel = angel.split("/")[0];
+						}
+					}
+					delete face.websites[i];
+					if (!inArray(angel,face.angels)) {
+						face.angels.push(angel);
+					}					
 				}
 			}
 		}
@@ -346,8 +390,9 @@ $(document).ready(function() {
 	}
 
 	var to;
+	var face = {};
 	$('a[href^="user?"]').live("mouseenter",function() {
-		var face = {};
+		face = {};
 		face.user = $(this).attr("href").replace("user?id=","");
 		if(to!=null) {
 			clearTimeout(to);
@@ -355,7 +400,6 @@ $(document).ready(function() {
 		}
 		to = setTimeout(function() {
 			$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Searching about "+face.user+"...</div>");
-//			face.request = "http://api.thriftdb.com/api.hnsearch.com/users/_search?filter[fields][username][]="+face.user;
 			face.request = "http://news.ycombinator.com/user?id="+face.user;
 			face.websites = [];
 			face.emails = [];
@@ -365,8 +409,12 @@ $(document).ready(function() {
 			face.githubDetails = {};
 			face.klouts = [];
 			face.kloutDetails = {};
+			face.facebooks = [];
+			face.facebookDetails = {};
 			face.foursquares = [];
 			face.foursquareDetails = {};
+			face.angels = [];
+			face.angelDetails = {};
 			face.linkedins = [];
 			face.pictures = [];
 			face.locations = [];
@@ -377,16 +425,15 @@ $(document).ready(function() {
 				accepts: "text/html",
 				url : face.request
 			}).success(function(data) {
-				//				face.about = $.parseJSON(data)["results"][0]["item"]["about"];
-				//				face.karma = $.parseJSON(data)["results"][0]["item"]["karma"];
 				$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Found HN profile...</div>");
 				face.about = $(data).find('tbody:eq(2)').find('td:eq(9)')[0].innerHTML;
 				face.karma = $(data).find('tbody:eq(2)').find('td:eq(5)')[0].innerHTML;
 				if (face.about !== null) {
 					face.bios.push(face.about);
-					face = extractContacts(face.about,face);
+//					face = extractContacts(face.about,face);
+					extractContacts(face.about,face);
 					if (face.websites.length) {
-						var face_b = face;
+//						var face_b = face;
 						for (i in face.websites) {
 							if (face.websites[i] !== undefined) {
 								$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Extracting "+face.websites[i]+"...</div>");
@@ -396,15 +443,16 @@ $(document).ready(function() {
 								}).success(function(data) {
 									$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Extracted "+face.websites[i]+"</div>");
 									if (data!==null) {				
-										face_b = extractContacts(data,face_b);
+//										face = extractContacts(data,face);
+										extractContacts(data,face);
 										if (i == face.websites.length - 1) {
-											$("#boxHackerfaceInner").html(displayProfile(face_b));
+											$("#boxHackerfaceInner").html(displayProfile(face));
 										}
 									} else {
 										$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Nothing found in "+face.websites[i]+"</div>");										
 									}
 								}).error(function(data) {
-									$("#boxHackerfaceInner").html(displayProfile(face_b));
+									$("#boxHackerfaceInner").html(displayProfile(face));
 								});							
 							} else {
 								$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>"+face.websites[i]+" undefined</div>");									
