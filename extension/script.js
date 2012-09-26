@@ -156,6 +156,14 @@ displayProfile = function(face) {
 			profile += "</div>";
 		profile += "</div>";			
 	}
+	if (face.googlepluses.length) {
+		profile += "<div class='hackerfaceEntry'>";
+			profile += "<div>";
+				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/googleplus.png' class='hackerfaceIcon'>";
+				profile += "<a class='hackerfaceUsername' href='https://plus.google.com/"+face.googlepluses[0]+"' target='_blank'>Google+</a>";
+			profile += "</div>";
+		profile += "</div>";			
+	}
 	if (face.klouts.length) {
 		profile += "<div class='hackerfaceEntry'>";
 			profile += "<div>";
@@ -386,7 +394,7 @@ $(document).ready(function() {
 					delete face.websites[i];
 					if (!inArray(linkedin,face.linkedins)) {
 						face.linkedins.push(linkedin);
-					}					
+					}
 				} else if (face.websites[i].indexOf("angel.co") !=-1) {
 					var angel = cleanUsername(face.websites[i]);
 					if (angel!==undefined) {
@@ -398,6 +406,18 @@ $(document).ready(function() {
 					delete face.websites[i];
 					if (!inArray(angel,face.angels)) {
 						face.angels.push(angel);
+					}					
+				} else if (face.websites[i].indexOf("plus.google.com") !=-1) {
+					var googleplus = cleanUsername(face.websites[i]);
+					if (googleplus!==undefined) {
+						googleplus = googleplus.split("plus.google.com/")[1];
+						if (googleplus!==undefined) {
+							googleplus = googleplus.split("/")[0];
+						}
+					}
+					delete face.websites[i];
+					if (!inArray(googleplus,face.googlepluses)) {
+						face.googlepluses.push(googleplus);
 					}					
 				}
 			}
@@ -429,6 +449,8 @@ $(document).ready(function() {
 			face.facebookDetails = {};
 			face.foursquares = [];
 			face.foursquareDetails = {};
+			face.googlepluses = [];
+			face.googleplusDetails = {};
 			face.angels = [];
 			face.angelDetails = {};
 			face.linkedins = [];
@@ -450,10 +472,8 @@ $(document).ready(function() {
 				face.karma = $(data).find('tbody:eq(2)').find('td:eq(5)')[0].innerHTML;
 				if (face.about !== null) {
 					face.bios.push(face.about);
-//					face = extractContacts(face.about,face);
 					extractContacts(face.about,face);
 					if (face.websites.length) {
-//						var face_b = face;
 						for (i in face.websites) {
 							if (face.websites[i] !== undefined) {
 								$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Extracting "+face.websites[i]+"...</div>");
@@ -462,8 +482,7 @@ $(document).ready(function() {
 									url: face.websites[i]
 								}).success(function(data) {
 									$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Extracted "+face.websites[i]+"</div>");
-									if (data!==null) {				
-//										face = extractContacts(data,face);
+									if (data!==null) {
 										extractContacts(data,face);
 										if (i == face.websites.length - 1) {
 											$("#boxHackerfaceInner").html(displayProfile(face));
