@@ -57,7 +57,7 @@ var box = "<div id='boxHackerface'";
 if (localStorage['shown']==0) {
 	box += " class='hackerboxHidden'";
 }
-box += "><div class='hackerfaceHide' style='position:fixed;margin-left:285px;margin-top:30px;z-index:100;cursor:pointer;'>x</div>";
+box += "><div class='hackerfaceHide hackerfaceCross'>x</div>";
 box += "<div id='boxHackerfaceInner'><div class='hackerfaceEntry'>Hover a name to see magic</div></div></div>";
 $('tbody:eq(0)').css({"position":"relative"}).prepend(box);
 
@@ -84,26 +84,33 @@ $(".hackerfaceHide").live("click",function() {
 displayProfile = function(face) {
 	var profile = "";
 	profile += "<div class='hackerfaceEntry'>";
-		if (face.pictures[0]) {
-			picture = face.pictures[0];
-		} else {
-			picture = "https://raw.github.com/Gwendall/hackerface/gh-pages/stache.png";
-		}
-		profile += "<div style='width:50px;height:50px;float:left;'><img style='width:50px;height:50px;border-radius:2px;' src='"+picture+"'></div>";
-		profile += "<div style='margin-left:10px;float:left;font-weight:bold;'>";
-			profile += "<div>"+face.names[0]+"</div>";
-			profile += "<div>"+face.locations[0]+"</div>";
-			profile += "<div>"+face.user+" ("+addCommas(face.karma)+")</div>";
+		profile += "<div style='display:table;width:100%;'>";
+			if (face.pictures[0]) {
+				picture = face.pictures[0];
+			} else {
+				picture = "https://raw.github.com/Gwendall/hackerface/gh-pages/stache.png";
+			}
+			profile += "<div style='width:50px;height:50px;float:left;'><img style='width:50px;height:50px;border-radius:2px;' src='"+picture+"'></div>";
+			profile += "<div style='margin-left:10px;float:left;'>";
+				if (face.names[0]!=undefined) {
+					profile += "<div style='font-weight:bold;'>"+face.names[0]+"</div>";				
+				}
+				if (face.locations[0]!=undefined) {
+					profile += "<div style=''>"+face.locations[0]+"</div>";				
+				}
+			profile += "</div>";
 		profile += "</div>";
+		if (face.about) {
+			profile += "<div style='width:100%;margin-top:10px;'>"+getLinks(face.about)+"</div>";		
+		}
 	profile += "</div>";
-	if (face.about) {
-		profile += "<div class='hackerfaceEntry'>HN bio: "+getLinks(face.about)+"</div>";		
-	}
 
 	profile += "<div class='hackerfaceEntry'>";
 		profile += "<div>";
 			profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/hackernews.png' class='hackerfaceIcon'>";
 			profile += "<a class='hackerfaceUsername' href='http://http://news.ycombinator.com/user?id="+face.user+"' target='_blank'>"+face.user+"</a>";
+			profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+			profile += "<span>"+addCommas(face.karma)+" karma</span>";
 		profile += "</div>";
 	profile += "</div>";			
 
@@ -113,24 +120,52 @@ displayProfile = function(face) {
 				profile += "<div>";
 					profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/twitter.png' class='hackerfaceIcon'>";
 					profile += "<a class='hackerfaceUsername' href='http://twitter.com/"+face.twitters[0]+"' target='_blank'>"+face.twitters[0]+"</a>";
+					profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+					profile += "<span>"+addCommas(face.twitterDetails.followers_count)+" followers</span>";
+					profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+					profile += "<span>"+addCommas(face.twitterDetails.friends_count)+" following</span>";
 				profile += "</div>";
 			profile += "</div>";			
 //		}
+	}
+	if (face.klouts.length) {
+		profile += "<div class='hackerfaceEntry'>";
+			profile += "<div>";
+				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/klout.png' class='hackerfaceIcon'>";
+				profile += "<a class='hackerfaceUsername' href='http://klout.com/"+face.klouts[0]+"' target='_blank'>"+face.klouts[0]+"</a>";
+				profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+				profile += "<span>"+Math.round(face.kloutDetails.score)+" klouts</span>";
+			profile += "</div>";
+		profile += "</div>";			
 	}
 	if (face.githubs.length) {
 		profile += "<div class='hackerfaceEntry'>";
 			profile += "<div>";
 				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/github.png' class='hackerfaceIcon'>";
 				profile += "<a class='hackerfaceUsername' href='http://github.com/"+face.githubs[0]+"' target='_blank'>"+face.githubs[0]+"</a>";
+				profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+				profile += "<span>"+addCommas(face.githubDetails.public_repos)+" repos</span>";
+				profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+				profile += "<span>"+addCommas(face.githubDetails.public_gists)+" gists</span>";
 			profile += "</div>";
 		profile += "</div>";			
 	}
 	if (face.linkedins.length) {
-		profile += "<div class='hackerfaceEntry'>Linkedin: <a href='http://linkedin.com/in/"+face.linkedins[0]+"' target='_blank'>"+face.linkedins[0]+"</a></div>";		
+		profile += "<div class='hackerfaceEntry'>";
+			profile += "<div>";
+				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/linkedin.png' class='hackerfaceIcon'>";
+				profile += "<a class='hackerfaceUsername' href='http://linkedin.com/in/"+face.linkedins[0]+"' target='_blank'>"+face.linkedins[0]+"</a>";
+			profile += "</div>";
+		profile += "</div>";
 	}
 	if (face.emails.length) {
 		for (i in face.emails) {
-			profile += "<div class='hackerfaceEntry'>Email: <a href='mailto:"+face.emails[i]+"'>"+face.emails[i]+"</a></div>";			
+			profile += "<div class='hackerfaceEntry'>";
+				profile += "<div>";
+					profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/mail.png' class='hackerfaceIcon'>";
+					profile += "<a class='hackerfaceUsername' href='mailto:"+face.emails[i]+"' target='_blank'>"+face.emails[i]+"</a>";
+				profile += "</div>";
+			profile += "</div>";
 		}
 	}
 //	for (i in face.websites) {
@@ -145,7 +180,7 @@ $(document).ready(function() {
 //	var regUrls = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;;
 	var regUrls = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
 //	var regEmails = /^\S+@\S+\.\S+$/;
-	var regEmails = /^[A-Z0-9\._%+-]+(@|\s*\[\s*at\s*\]\s*)[A-Z0-9\.-]+(\.|\s*\[\s*dot\s*\]\s*)[a-z]{2,6}$/gim;
+	var regEmails = /^(>)?[A-Z0-9\._%+-]+(@|\s*\[\s*at\s*\]\s*)[A-Z0-9\.-]+(\.|\s*\[\s*dot\s*\]\s*)[a-z]{2,6}$/gim;
 	var regTwitters = /(^|\s|>)@(\w+)/g;
 	var forb_twitter = ["share","widgets.js","intent","replies","statuses","!","search","import",undefined];
 	var faces = [];	
@@ -184,13 +219,26 @@ $(document).ready(function() {
 						accepts: "text/html",
 						url: "https://api.twitter.com/1/users/show.json?include_entities=true&screen_name="+twitter
 					}).success(function(data) {
-						console.log(data);
 						face.twitterDetails = data;
 						face.locations.push(data.location);
 						face.bios.push(data.description);
+						face.about = data.description;
 						face.names.push(data.name);
 						$("#boxHackerfaceInner").html(displayProfile(face));						
 					});
+					$.ajax({
+						dataType: "json",
+						url: "http://api.klout.com/v2/identity.json/twitter?key=t3zd36eerj6h2scqea86qex6&screenName="+twitter
+					}).success(function(data) {
+						$.ajax({
+							dataType: "json",
+							url: "http://api.klout.com/v2/user.json/"+data.id+"/score?key=t3zd36eerj6h2scqea86qex6"
+						}).success(function(data) {
+							face.klouts.push(twitter);
+							face.kloutDetails = data;
+							$("#boxHackerfaceInner").html(displayProfile(face));						
+						});						
+					});				
 				}
 			}
 		}
@@ -215,12 +263,27 @@ $(document).ready(function() {
 							dataType: "json",
 							url: "https://api.twitter.com/1/users/show.json?include_entities=true&screen_name="+twitter
 						}).success(function(data) {
-							console.log(data);
 							face.twitterDetails = data;
 							face.locations.push(data.location);
 							face.bios.push(data.description);
+							face.about = data.description;
 							face.names.push(data.name);
 							$("#boxHackerfaceInner").html(displayProfile(face));						
+							$.ajax({
+								dataType: "json",
+								url: "http://api.klout.com/v2/identity.json/twitter?key=t3zd36eerj6h2scqea86qex6&screenName="+twitter
+							}).success(function(data) {
+								$.ajax({
+									dataType: "json",
+									url: "http://api.klout.com/v2/user.json/"+data.id+"/score?key=t3zd36eerj6h2scqea86qex6"
+								}).success(function(data) {
+									face.klouts.push(twitter);
+									face.kloutDetails = data;
+									$("#boxHackerfaceInner").html(displayProfile(face));						
+								});						
+							});
+						}).error(function(data) {
+							$("#boxHackerfaceInner").html(displayProfile(face));
 						});
 					}					
 				} else if (face.websites[i].indexOf("github.com") !=-1) {
@@ -235,12 +298,13 @@ $(document).ready(function() {
 					if (!inArray(github,face.githubs)) {
 						face.githubs.push(github);
 						$.ajax({
-//							accepts: "text/html",
 							dataType: "json",
 							url: "https://api.github.com/users/"+github
 						}).success(function(data) {
 							face.githubDetails = data;
-							console.log(data);
+							face.locations.push(data.location);
+							face.bios.push(data.bio);
+							face.names.push(data.name);
 						});
 					}					
 				} else if (face.websites[i].indexOf("linkedin.com/in") !=-1) {
@@ -261,9 +325,6 @@ $(document).ready(function() {
 		return face;
 	}
 
-	//	$('td').live("mouseenter",function() {
-	//		$(this) = $(this).find('a[href^="user?"]:eq(0)');
-	
 	var to;
 	$('a[href^="user?"]').live("mouseenter",function() {
 		var face = {};
@@ -273,7 +334,7 @@ $(document).ready(function() {
 			to = null;
 		}
 		to = setTimeout(function() {
-			$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Loading...</div>");
+			$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Searching about "+face.user+"...</div>");
 //			face.request = "http://api.thriftdb.com/api.hnsearch.com/users/_search?filter[fields][username][]="+face.user;
 			face.request = "http://news.ycombinator.com/user?id="+face.user;
 			face.websites = [];
@@ -282,6 +343,8 @@ $(document).ready(function() {
 			face.twitterDetails = {};
 			face.githubs = [];
 			face.githubDetails = {};
+			face.klouts = [];
+			face.kloutDetails = {};
 			face.linkedins = [];
 			face.pictures = [];
 			face.locations = [];
@@ -318,11 +381,13 @@ $(document).ready(function() {
 									} else {
 										$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Nothing found in "+face.websites[i]+"</div>");										
 									}
+								}).error(function(data) {
+									$("#boxHackerfaceInner").html(displayProfile(face_b));
 								});							
 							} else {
 								$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>"+face.websites[i]+" undefined</div>");									
 							}
-						}					
+						}
 					} else {
 						$("#boxHackerfaceInner").html(displayProfile(face));						
 					}
