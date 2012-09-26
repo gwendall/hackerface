@@ -5,32 +5,46 @@
 	float:right;
 	width:300px;
 	position:relative;
+	font-size:12px;
 }
 
 #boxHackerfaceInner { 
 	width:300px;
 	position:fixed;
-	margin-top:-10px;
+	margin-top:24px;
 	background:#ECEDE6;
-	opacity:0.8;
 }
 
 #boxHackerfaceInner:hover { 
 	opacity:1;
 }
 
+.hackerboxHidden {
+	display:none;
+}
+
 .hackerfaceEntry {
 	display:table;
-	width:100%;
+	width:280px;
+	max-width:280px;
 	padding:10px;
 	border-top:#F9FAF2 solid thin;
 	border-bottom:#D4D4CF solid thin;
 	cursor:pointer;
+	white-space: pre-line;
 	word-wrap:break-word;
 }
 
 .hackerfaceEntry:hover {
 	background:#E4E6DC;
+}
+
+#boxHackerfaceInner a {
+	color:black;
+}
+
+#boxHackerfaceInner a:hover {
+	text-decoration:underline;
 }
 
 .yfacerPic {
