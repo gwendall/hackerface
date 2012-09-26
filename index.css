@@ -1,5 +1,6 @@
 body {
 	background:#F6F7EF;
+	background:#E8E8E8;
 	-webkit-font-smoothing:antialiased;
 	font-family:"myriad-pro-1", "myriad-pro-2", Myriad, Arial, sans-serif;
 	text-shadow:1px 1px white;
@@ -12,7 +13,7 @@ body {
 	text-align:center;
 }
 .title {
-	font-size:120px;
+	font-size:90px;
 	font-family:'Lobster';
 	font-family:'Dosis';
 	color:#545454;

@@ -53,30 +53,39 @@ getLinks = function(string) {
     return string.replace(exp,"<a href='$1' target='_blank'>$1</a>"); 
 }
 
-var box = "<div id='boxHackerface'";
-if (localStorage['shown']==0) {
-	box += " class='hackerboxHidden'";
-}
-box += "><div class='hackerfaceHide hackerfaceCross'>x</div>";
-box += "<div id='boxHackerfaceInner'><div class='hackerfaceEntry'>Hover a name to see magic</div></div></div>";
-$('tbody:eq(0)').css({"position":"relative"}).prepend(box);
+if ($('a[href^="user?"]').length) {
+	var box = "<div id='boxHackerface'";
+	if (localStorage['shown']==0) {
+		box += " class='hackerboxHidden'";
+	}
+	box += ">";
+		box += "<div class='hackerfaceHide hackerfaceCross'>x</div>";
+		box += "<div id='boxHackerfaceInner'>";
+			box += "<div class='hackerfaceEntry'>";
+				box += "<div>"+$('a[href^="user?"]').length+" users found in this page.</div>";
+				box += "<div style='margin-top:3px;'>Hover over a username to get details.</div>";
+			box += "</div>";
+		box += "</div>";
+	box += "</div>";
+	$('tbody:eq(0)').css({"position":"relative"}).prepend(box);
 
-var msg = "<td style='text-align:right;color:black;cursor:pointer;' id='hackerfaceHide' class='hackerfaceHide'>";
-if (localStorage['shown']==1) {
-	msg += "Hide hackerface";
-} else {
-	msg += "Show hackerface";
+	var msg = "<td style='text-align:right;color:black;cursor:pointer;' id='hackerfaceHide' class='hackerfaceHide'>";
+	if (localStorage['shown']==1) {
+		msg += "hide hackerface";
+	} else {
+		msg += "show hackerface";
+	}
+	msg += "</td>";
+	$('tr:eq(1) td:eq(1)').after(msg);	
 }
-msg += "</td>";
-$('tr:eq(1) td:eq(1)').after(msg);
 
 $(".hackerfaceHide").live("click",function() {
 	$("#boxHackerface").toggleClass("hackerboxHidden");
 	if ($("#boxHackerface").hasClass("hackerboxHidden")) {
-		$("#hackerfaceHide").html("Show hackerface");
+		$("#hackerfaceHide").html("show hackerface");
 		localStorage['shown'] = 0;
 	} else {
-		$("#hackerfaceHide").html("Hide hackerface");		
+		$("#hackerfaceHide").html("hide hackerface");		
 		localStorage['shown'] = 1;
 	}
 });
@@ -108,7 +117,7 @@ displayProfile = function(face) {
 	profile += "<div class='hackerfaceEntry'>";
 		profile += "<div>";
 			profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/hackernews.png' class='hackerfaceIcon'>";
-			profile += "<a class='hackerfaceUsername' href='http://http://news.ycombinator.com/user?id="+face.user+"' target='_blank'>"+face.user+"</a>";
+			profile += "<a class='hackerfaceUsername' href='http://news.ycombinator.com/user?id="+face.user+"' target='_blank'>"+face.user+"</a>";
 			profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
 			profile += "<span>"+addCommas(face.karma)+" karma</span>";
 		profile += "</div>";
@@ -264,8 +273,7 @@ $(document).ready(function() {
 						face.names.push(data.firstName+" "+data.lastName);
 						face.emails.push(data.contact.email);
 						$("#boxHackerfaceInner").html(displayProfile(face));
-						console.log(data.contact);
-						if (data.contact.facebook) {
+						if (data.contact.facebook!==undefined) {
 							face.facebooks.push(data.contact.facebook);
 							$.ajax({
 								dataType: "json",
@@ -426,7 +434,11 @@ $(document).ready(function() {
 				url : face.request
 			}).success(function(data) {
 				$("#boxHackerfaceInner").html("<div class='hackerfaceEntry'>Found HN profile...</div>");
-				face.about = $(data).find('tbody:eq(2)').find('td:eq(9)')[0].innerHTML;
+				if (face.user=="pg") {
+					face.about = "@paulg";					
+				} else {
+					face.about = $(data).find('tbody:eq(2)').find('td:eq(9)')[0].innerHTML;
+				}
 				face.karma = $(data).find('tbody:eq(2)').find('td:eq(5)')[0].innerHTML;
 				if (face.about !== null) {
 					face.bios.push(face.about);
