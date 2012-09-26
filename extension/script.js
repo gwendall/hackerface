@@ -136,10 +136,14 @@ displayProfile = function(face) {
 				profile += "<div>";
 					profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/twitter.png' class='hackerfaceIcon'>";
 					profile += "<a class='hackerfaceUsername' href='http://twitter.com/"+face.twitters[0]+"' target='_blank'>"+face.twitters[0]+"</a>";
-					profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
-					profile += "<span>"+addCommas(face.twitterDetails.followers_count)+" followers</span>";
-					profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
-					profile += "<span>"+addCommas(face.twitterDetails.friends_count)+" following</span>";
+					if (face.twitterDetails.followers_count!==undefined) {
+						profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+						profile += "<span>"+addCommas(face.twitterDetails.followers_count)+" followers</span>";
+					}
+					if (face.twitterDetails.friends_count!==undefined) {
+						profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+						profile += "<span>"+addCommas(face.twitterDetails.friends_count)+" following</span>";
+					}
 				profile += "</div>";
 			profile += "</div>";			
 //		}
@@ -175,10 +179,14 @@ displayProfile = function(face) {
 			profile += "<div>";
 				profile += "<img src='https://raw.github.com/Gwendall/hackerface/gh-pages/icons/github.png' class='hackerfaceIcon'>";
 				profile += "<a class='hackerfaceUsername' href='http://github.com/"+face.githubs[0]+"' target='_blank'>"+face.githubs[0]+"</a>";
-				profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
-				profile += "<span>"+addCommas(face.githubDetails.public_repos)+" repos</span>";
-				profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
-				profile += "<span>"+addCommas(face.githubDetails.public_gists)+" gists</span>";
+				if (face.githubDetails.public_repos!==undefined) {
+					profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+					profile += "<span>"+addCommas(face.githubDetails.public_repos)+" repos</span>";					
+				}
+				if (face.githubDetails.public_gists!==undefined) {
+					profile += "<span style='margin-left:3px;margin-right:3px;color:gray;'>·</span>"
+					profile += "<span>"+addCommas(face.githubDetails.public_gists)+" gists</span>";
+				}
 			profile += "</div>";
 		profile += "</div>";			
 	}
