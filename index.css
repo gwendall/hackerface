@@ -1,0 +1,72 @@
+body {
+	background:#F6F7EF;
+	-webkit-font-smoothing:antialiased;
+	font-family:"myriad-pro-1", "myriad-pro-2", Myriad, Arial, sans-serif;
+	text-shadow:1px 1px white;
+	padding-bottom:50px;
+}
+.logo {
+	margin:auto;
+	display:table;
+	margin-top:30px;
+	text-align:center;
+}
+.title {
+	font-size:120px;
+	font-family:'Lobster';
+	font-family:'Dosis';
+	color:#545454;
+}
+.subtitle {
+	margin-top:5px;
+	font-size:16px;
+	font-weight:200;
+	color:#575757;
+}
+.btn {
+	font-size:16px;
+	width:280px;
+	padding:20px;
+	background:#FF6600;
+	margin:auto;
+	color:white;
+	text-shadow:none;
+	border-radius:5px;
+}
+
+.btn:hover {
+	background:#FF7417;
+}
+.btn:active {
+	position:relative;
+	top:1px;
+}
+.section {
+	display:table;
+	text-align:center;
+	margin:auto;
+}
+img {
+	border:#ADADAD solid thin;
+	-webkit-box-shadow: 0 5px 4px -4px black;
+	box-shadow: 0 5px 4px -4px black;
+	border-radius:5px;
+	width:900px;
+	margin:auto;
+	background:black;
+	cursor:pointer;
+	-webkit-transition: all .1s linear;
+	-moz-transition: all .1s linear;
+	transition: all .1s linear;
+}
+
+img:hover {
+	opacity:0.9;
+}
+
+a {
+	font-weight:bold;
+	color:gray;
+	font-size:14px;
+	text-decoration:none;
+}

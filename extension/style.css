@@ -1,0 +1,59 @@
+#boxHackerface { 
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	box-sizing: border-box;
+	float:right;
+	width:300px;
+	position:relative;
+}
+
+#boxHackerfaceInner { 
+	width:300px;
+	position:fixed;
+	margin-top:-10px;
+	background:#ECEDE6;
+	opacity:0.8;
+}
+
+#boxHackerfaceInner:hover { 
+	opacity:1;
+}
+
+.hackerfaceEntry {
+	display:table;
+	width:100%;
+	padding:10px;
+	border-top:#F9FAF2 solid thin;
+	border-bottom:#D4D4CF solid thin;
+	cursor:pointer;
+	word-wrap:break-word;
+}
+
+.hackerfaceEntry:hover {
+	background:#E4E6DC;
+}
+
+.yfacerPic {
+	width:19px;
+	height:19px;
+	border-radius:1px;
+	box-shadow:transparent;
+	border:none;
+	padding:0px;
+	display:none;
+	background:#F6F7EF;
+
+	position:absolute;	
+	margin-top:-1px;
+	margin-left:4px;
+/*
+	margin-left:-35px;
+	margin-top:2px;
+*/
+}
+
+.yfacerName {
+/*
+	font-weight:bold;
+*/
+}
