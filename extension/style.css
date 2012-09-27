@@ -33,6 +33,11 @@
 	display:none;
 }
 
+#hackerfaceHide {
+	position:relative;
+	left:-5px;
+}
+
 .hackerfaceCross {
 	position:fixed;
 	margin-left:285px;

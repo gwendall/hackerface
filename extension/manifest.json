@@ -1,6 +1,6 @@
 {
 	"manifest_version": 2,
-	"version": "4.3",
+	"version": "4.5",
 	"name": "hackerface",
 	"description": "Rapportive for Hackernews.",
 	"icons": { "16": "icon16.png",
@@ -10,34 +10,14 @@
 		"default_icon": "icon16.png"
 	},
 	"permissions": [
-		"http://news.ycombinator.com/",
-		"http://news.ycombinator.org/",
-		"https://news.ycombinator.com/",
-		"https://news.ycombinator.org/",
 		"https://*/*",
 		"http://*/*"
 	],
 	"content_scripts": [
 		{
 			"matches": [
-				"*://*.news.ycombinator.com/",
-				"*://*.news.ycombinator.com/news*",
-				"*://*.news.ycombinator.com/newest*",
-				"*://*.news.ycombinator.com/submitted*",
-				"*://*.news.ycombinator.com/submissions*",
-				"*://*.news.ycombinator.com/ask*",
-				"*://*.news.ycombinator.com/saved*",
-				"*://*.news.ycombinator.com/item*",
-				"*://*.news.ycombinator.com/x*",
-				"*://*.news.ycombinator.org/",
-				"*://*.news.ycombinator.org/news*",
-				"*://*.news.ycombinator.org/newest*",
-				"*://*.news.ycombinator.org/submitted*",
-				"*://*.news.ycombinator.org/submissions*",
-				"*://*.news.ycombinator.org/ask*",
-				"*://*.news.ycombinator.org/saved*",
-				"*://*.news.ycombinator.org/item*",
-				"*://*.news.ycombinator.org/x*"
+				"*://*.news.ycombinator.com/*",
+				"*://*.news.ycombinator.org/*"
 			],
 			"css": ["style.css"],
 			"js": ["jquery.js","script.mini.js"],
