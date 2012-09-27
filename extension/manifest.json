@@ -40,7 +40,7 @@
 				"*://*.news.ycombinator.org/x*"
 			],
 			"css": ["style.css"],
-			"js": ["jquery.js","script.mini.js"],
+			"js": ["jquery.js","script.js"],
 			"run_at": "document_end"
 		}
 	]
