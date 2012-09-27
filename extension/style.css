@@ -1,7 +1,4 @@
 #boxHackerface { 
-	-moz-box-sizing:border-box;
-	-webkit-box-sizing:border-box;
-	box-sizing: border-box;
 	float:right;
 	width:300px;
 	position:relative;
@@ -11,11 +8,21 @@
 #boxHackerfaceInner { 
 	width:300px;
 	position:fixed;
+/*
 	margin-top:24px;
 	margin-left:-2px;
+*/
 	background:#ECEDE6;
 	border:#D4D4CF solid thin;
 	border-bottom:none;
+	word-wrap:break-word;
+	table-layout:fixed;
+	overflow-x:hidden;
+	opacity:0.95;
+	-webkit-font-smoothing:antialiased;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	box-sizing: border-box;
 }
 
 #boxHackerfaceInner:hover { 
@@ -29,7 +36,6 @@
 .hackerfaceCross {
 	position:fixed;
 	margin-left:285px;
-	margin-top:30px;
 	z-index:100;
 	cursor:pointer;
 	color:black;
@@ -42,18 +48,37 @@
 
 .hackerfaceEntry {
 	display:table;
+/*
 	width:280px;
 	max-width:280px;
+*/
+	width:100%;
 	padding:10px;
 	border-top:#F9FAF2 solid thin;
 	border-bottom:#D4D4CF solid thin;
 	cursor:pointer;
 	white-space: pre-line;
 	word-wrap:break-word;
+	table-layout:fixed;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+	box-sizing: border-box;
 }
 
 .hackerfaceEntry:hover {
 	background:#E4E6DC;
+}
+
+.hackerfaceSubentry {
+	width:240px;
+	margin-left:25px;
+	margin-top:5px;
+}
+
+.hackerfaceSubentry p {
+	margin:0px;
+	padding:0px;
+	padding-bottom:2px;
 }
 
 #boxHackerfaceInner a {
@@ -69,31 +94,10 @@
 	width:15px;
 }
 
-#boxHackerfaceInner .hackerfaceUsername {
-	margin-left:20px;
+.hackerfaceUsername {
+	margin-left:25px;
 }
 
-.yfacerPic {
-	width:19px;
-	height:19px;
-	border-radius:1px;
-	box-shadow:transparent;
-	border:none;
-	padding:0px;
-	display:none;
-	background:#F6F7EF;
-
-	position:absolute;	
-	margin-top:-1px;
-	margin-left:4px;
-/*
-	margin-left:-35px;
-	margin-top:2px;
-*/
-}
-
-.yfacerName {
-/*
+.hackerfaceUsername a {
 	font-weight:bold;
-*/
 }
