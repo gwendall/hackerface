@@ -33,6 +33,7 @@ body {
 	color:white;
 	text-shadow:none;
 	border-radius:5px;
+	font-weight:normal;
 }
 
 .btn:hover {
